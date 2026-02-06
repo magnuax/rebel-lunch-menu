@@ -6,7 +6,7 @@ The menu is published as an image. This tool:
 1. Fetches the menu image from [The Food Hub](https://www.thefoodhub.no/kantine)
 2. Crops out relevant weekday sections and menu entries
 3. Runs [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) on the cropped out sections
-4. Formats returns dish, sub-header and allergen strings (in norwegian)
+4. Formats and returns dish, sub-header and allergen strings (in norwegian)
 
 ### Usage
 ```
