@@ -1,4 +1,4 @@
-# Rebel lunch menu CLI
+# Rebel Lunch Menu CLI
 
 A slow and comically overengineered tool for accessing the weekly menu at The Food Hub, at Rebel (*Universitetsgata 2, 0164 Oslo*).
 
