@@ -21,11 +21,10 @@ def arg_parser():
                 parsed["weekday"] = argument.split("=")[1]
 
             elif argument == "--help":
-                print("Usage: menu.py [--full] [--today] [--weekday=<day>]")
+                print("Usage: python3 -m lunchmenu.cli [--full] [--today] [--weekday=<day>]")
                 sys.exit(0)
     
     return parsed
-
 
 if __name__ == "__main__":
     import datetime
