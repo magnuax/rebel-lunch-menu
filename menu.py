@@ -23,7 +23,7 @@ WEEKDAY_CORNERS = {
     "tuesday":   ((2000, 680),  (4200, 2000)), # 2200 x 1320
     "wednesday": ((4200, 680),  (6000, 2000)), # 1800 x 1320
     "thursday":  ((2000, 2000), (4200, 3200)), # 2200 x 1200
-    "friday":    ((4200, 2000), (6000, 3000)), # 1800 x 1000
+    "friday":    ((4200, 2000), (6000, 3100)), # 1800 x 1000
 }
 
 # y coordinate of the line that divides daily entry into non-vegetarian and vegetarian options.
@@ -32,7 +32,7 @@ WEEKDAY_ENTRY_SLICE ={
     "tuesday":   680,
     "wednesday": 720,
     "thursday":  700,
-    "friday":    600
+    "friday":    700
 }
 
 request = SESSION.get(PAGE_URL, timeout=10, stream=True)
@@ -98,6 +98,10 @@ def menu_of_the_day(weekday):
     bottom_raw_text = pytesseract.image_to_string(bottom_half, lang="nor+eng", config=TESS_CONFIG)
 
     combined = parse_menu_entry(top_raw_text, includes_title=True) + "\n" + parse_menu_entry(bottom_raw_text)
+
+    import matplotlib.pyplot as plt
+    plt.imshow(menu_entry)
+    plt.show()
 
     return combined
 
