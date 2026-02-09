@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rebel-lunch-menu"
+version = "0.1.0"
+description = "A slow and comically overengineered CLI for Rebel Food Hub weekly lunch menu"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "magnuax" }]
+license = { text = "GNU GPLv3" }
+
+# Add your runtime deps here (examples; adjust to your actual imports)
+dependencies = [
+  "requests",
+  "pillow",
+  "pytesseract",
+  "bs4"
+]
+
+[project.scripts]
+lunchmenu = "lunchmenu.cli:main"
+
+[tool.setuptools]
+packages = ["lunchmenu"]
