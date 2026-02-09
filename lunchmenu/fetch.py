@@ -5,13 +5,12 @@ from io import BytesIO
 from PIL import Image
 from urllib.parse import urljoin
 
-def fetch_image():
-    
-    PAGE_URL = "https://www.thefoodhub.no/kantine"
-    SESSION = requests.Session()
-    EXAMPLE_WIDTH = 6240
-    EXAMPLE_HEIGHT = 3510
+PAGE_URL = "https://www.thefoodhub.no/kantine"
+SESSION = requests.Session()
+EXAMPLE_WIDTH = 6240
+EXAMPLE_HEIGHT = 3510
 
+def fetch_image():
     request = SESSION.get(PAGE_URL, timeout=10, stream=True)
     request.raise_for_status()
 

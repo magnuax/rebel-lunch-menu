@@ -47,7 +47,6 @@ def menu_of_the_day(weekday, image=None):
 
     return combined
 
-
 def menu_of_the_week(image=None):
     
     if image is None:
