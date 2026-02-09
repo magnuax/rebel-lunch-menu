@@ -10,12 +10,12 @@ The menu is published as an image. This tool:
 
 ### Usage
 ```
-ukesmeny.py [--full] [--today] [--weekday=<day>]
+python3 -m lunchmenu.cli [--full] [--today] [--weekday=<day>]
 ```
 
 ### Example
 ```
-$ python3 menu.py --weekday=wednesday
+$ python3 -m lunchmenu.cli --weekday=wednesday
 
 -------
 Onsdag

@@ -1,9 +1,9 @@
+from lunchmenu.parse import menu_of_the_day, menu_of_the_week
 import sys
 
 def arg_parser():
     
     parsed = {}
-    
     parsed["full"] = False
     parsed["today"] = False
     parsed["weekday"] = None
@@ -26,14 +26,22 @@ def arg_parser():
     
     return parsed
 
-def style(text, style):
-    if not sys.stdout.isatty():
-        return text
+
+if __name__ == "__main__":
+    from lunchmenu.cli import arg_parser
+    import datetime
+
+    parser = arg_parser()
     
-    if style == "bold":
-        return f"\033[1m{text}\033[0m"
+    if parser["full"]:
+        print(menu_of_the_week())
+        
+    elif parser["today"]:
+        today = datetime.date.today()
+        weekday = today.strftime("%A").lower()
+        print(menu_of_the_day(weekday))
     
-    if style == "italic":
-        return f"\033[3m{text}\033[0m"
-    
-    return text
+    elif parser["weekday"]:
+        weekday = parser["weekday"].lower()
+        print(menu_of_the_day(weekday))
+        
