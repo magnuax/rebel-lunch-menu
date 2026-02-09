@@ -99,10 +99,6 @@ def menu_of_the_day(weekday):
 
     combined = parse_menu_entry(top_raw_text, includes_title=True) + "\n" + parse_menu_entry(bottom_raw_text)
 
-    import matplotlib.pyplot as plt
-    plt.imshow(menu_entry)
-    plt.show()
-
     return combined
 
 
