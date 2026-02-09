@@ -1,4 +1,5 @@
 from lunchmenu.parse import menu_of_the_day, menu_of_the_week
+import datetime
 import sys
 
 def arg_parser():
@@ -26,9 +27,7 @@ def arg_parser():
     
     return parsed
 
-if __name__ == "__main__":
-    import datetime
-
+def main():
     parser = arg_parser()
     
     if parser["full"]:
@@ -43,3 +42,7 @@ if __name__ == "__main__":
         weekday = parser["weekday"].lower()
         print(menu_of_the_day(weekday))
         
+    return 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())

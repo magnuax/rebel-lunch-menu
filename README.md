@@ -6,16 +6,29 @@ The menu is published as an image. This tool:
 1. Fetches the menu image from [The Food Hub](https://www.thefoodhub.no/kantine)
 2. Crops out relevant weekday sections and menu entries
 3. Runs [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) on the cropped out sections
-4. Formats and returns dish, sub-header and allergen strings (in norwegian)
+4. Formats and returns dish, sub-header and allergen strings (in Norwegian)
 
-### Usage
+## Requirements
+- Python 3.10+
+- Tesseract OCR
+
+## Installation
+You may install the `rebel-lunch-menu` package into your current Python environment, allowing the CLI to be called globally.
+
+From the project root:
 ```
-python3 -m lunchmenu.cli [--full] [--today] [--weekday=<day>]
+pip install .
 ```
 
-### Example
+## Usage
+With the package installed:
 ```
-$ python3 -m lunchmenu.cli --weekday=wednesday
+lunchmenu [--full] [--today] [--weekday=<day>]
+```
+
+## Example usage
+```
+$ lunchmenu --weekday=wednesday
 
 -------
 Onsdag
