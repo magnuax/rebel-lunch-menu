@@ -12,11 +12,12 @@ TESS_CONFIG = r"--oem 1 --psm 6"
 PAGE_URL = "https://www.thefoodhub.no/kantine"
 SESSION = requests.Session()
 
-# Coordinates of upper left (1) and lower right (2) corners of the rectangles for each day
-
+# Dimensions of example image used to determine the coordinates of menu entries.
+# Used to scale the coordinates of actual menu image, which may have different dimensions.
 EXAMPLE_WIDTH = 6240
 EXAMPLE_HEIGHT = 3510
 
+# Coordinates of upper left (1) and lower right (2) corners of the rectangles for each day
 WEEKDAY_CORNERS = {
     "monday":    ((220,  680),  (2000, 2000)), # 1780 x 1320
     "tuesday":   ((2000, 680),  (4200, 2000)), # 2200 x 1320
@@ -25,6 +26,7 @@ WEEKDAY_CORNERS = {
     "friday":    ((4200, 2000), (6000, 3000)), # 1800 x 1000
 }
 
+# y coordinate of the line that divides daily entry into non-vegetarian and vegetarian options.
 WEEKDAY_ENTRY_SLICE ={
     "monday":    720,
     "tuesday":   680,
@@ -32,24 +34,6 @@ WEEKDAY_ENTRY_SLICE ={
     "thursday":  700,
     "friday":    600
 }
-
-
-
-ALLERGENS = {"egg":     True,
-            "fish":     True,
-            "gluten":   True,
-            "melk":     True,
-            "nøtter":   True,
-            "peanøtter": True,
-            "selleri":  True,
-            "sennep":   True,
-            "sesam":    True,
-            "sesamfrø": True,
-            "skalldyr": True,
-            "soya":     True,
-            "sulfitt":  True,
-            "bløtdyr":  True,
-            "lupin":    True}
 
 request = SESSION.get(PAGE_URL, timeout=10, stream=True)
 request.raise_for_status()
@@ -64,30 +48,17 @@ if not result or not result.get("href"):
 menu_url = urljoin(PAGE_URL, result["href"])
 response = SESSION.get(menu_url, timeout=10, stream=True)
 response.raise_for_status()
-img = Image.open(BytesIO(response.content))
+image = Image.open(BytesIO(response.content))
 
-SCALE_X = img.width / EXAMPLE_WIDTH
-SCALE_Y = img.height / EXAMPLE_HEIGHT
+SCALE_X = image.width / EXAMPLE_WIDTH
+SCALE_Y = image.height / EXAMPLE_HEIGHT
 
-def looks_like_allergens(line):
-    split = line.split(",")
-    
-    for part in split:
-        part = part.strip().lower()
-        if part in ALLERGENS:
-            return True                    
-
-    return False
 
 def parse_menu_entry(raw_text, includes_title=False):
-
+    
     formatted = ""
-    i = 0
-
-    split = raw_text.splitlines()
-    filtered = [line for line in split if line.strip() != ""]
+    filtered = [line for line in raw_text.splitlines() if line.strip() != ""]
     is_not_empty = len(filtered) > 0
-
 
     if includes_title and is_not_empty:
         title = filtered.pop(0)
@@ -95,9 +66,7 @@ def parse_menu_entry(raw_text, includes_title=False):
         formatted += style(title, "bold")
         formatted += "\n-------\n"
 
-
     lines = []
-
     if len(filtered) > 0:
         lines.append(style(filtered[0], "bold") + "\n")    
     if len(filtered) > 1:
@@ -107,8 +76,7 @@ def parse_menu_entry(raw_text, includes_title=False):
 
     formatted += "".join(lines)
     
-    return formatted
-
+    return formatted 
 
 
 def menu_of_the_day(weekday):
@@ -122,7 +90,7 @@ def menu_of_the_day(weekday):
     
     slice_idx = int(WEEKDAY_ENTRY_SLICE[weekday.lower()] * SCALE_Y)
 
-    menu_entry = img.crop((*corner_1, *corner_2))
+    menu_entry = image.crop((*corner_1, *corner_2))
     top_half    = menu_entry.crop((0, 0, menu_entry.width, slice_idx))
     bottom_half = menu_entry.crop((0, slice_idx, menu_entry.width, menu_entry.height))
         
@@ -135,15 +103,12 @@ def menu_of_the_day(weekday):
 
 
 def menu_of_the_week():
-
     full_menu = ""
-    import matplotlib.pyplot as plt
-
     for weekday in WEEKDAY_CORNERS.keys():
-        
         full_menu += menu_of_the_day(weekday) + "\n"
     
     return full_menu
+
 
 if __name__ == "__main__":
     from utils import arg_parser
