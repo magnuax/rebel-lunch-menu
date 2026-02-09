@@ -13,6 +13,10 @@ PAGE_URL = "https://www.thefoodhub.no/kantine"
 SESSION = requests.Session()
 
 # Coordinates of upper left (1) and lower right (2) corners of the rectangles for each day
+
+EXAMPLE_WIDTH = 6240
+EXAMPLE_HEIGHT = 3510
+
 WEEKDAY_CORNERS = {
     "monday":    ((220,  680),  (2000, 2000)), # 1780 x 1320
     "tuesday":   ((2000, 680),  (4200, 2000)), # 2200 x 1320
@@ -28,6 +32,8 @@ WEEKDAY_ENTRY_SLICE ={
     "thursday":  700,
     "friday":    600
 }
+
+
 
 ALLERGENS = {"egg":     True,
             "fish":     True,
@@ -60,6 +66,8 @@ response = SESSION.get(menu_url, timeout=10, stream=True)
 response.raise_for_status()
 img = Image.open(BytesIO(response.content))
 
+SCALE_X = img.width / EXAMPLE_WIDTH
+SCALE_Y = img.height / EXAMPLE_HEIGHT
 
 def looks_like_allergens(line):
     split = line.split(",")
@@ -108,10 +116,13 @@ def menu_of_the_day(weekday):
     if weekday not in WEEKDAY_CORNERS:
         raise ValueError("weekday not found!")
     
-    corner_1, corner_2 = WEEKDAY_CORNERS[weekday]
-    slice_idx = WEEKDAY_ENTRY_SLICE[weekday.lower()]
+    corners = WEEKDAY_CORNERS[weekday]
+    corner_1 = (int(corners[0][0] * SCALE_X), int(corners[0][1] * SCALE_Y))
+    corner_2 = (int(corners[1][0] * SCALE_X), int(corners[1][1] * SCALE_Y))
+    
+    slice_idx = int(WEEKDAY_ENTRY_SLICE[weekday.lower()] * SCALE_Y)
 
-    menu_entry = img.crop((*corner_1 , *corner_2))
+    menu_entry = img.crop((*corner_1, *corner_2))
     top_half    = menu_entry.crop((0, 0, menu_entry.width, slice_idx))
     bottom_half = menu_entry.crop((0, slice_idx, menu_entry.width, menu_entry.height))
         
