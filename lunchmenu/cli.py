@@ -28,7 +28,6 @@ def arg_parser():
 
 
 if __name__ == "__main__":
-    from lunchmenu.cli import arg_parser
     import datetime
 
     parser = arg_parser()
