@@ -23,7 +23,7 @@ pip install .
 ## Usage
 With the package installed:
 ```
-lunchmenu [--full] [--today] [--weekday=<day>]
+lunchmenu [--weekly] [--today] [--weekday=<day>]
 ```
 
 ## Example usage
