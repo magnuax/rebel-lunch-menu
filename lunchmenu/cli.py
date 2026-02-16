@@ -5,15 +5,17 @@ import sys
 def arg_parser():
     
     parsed = {}
-    parsed["full"] = False
+    parsed["weekly"] = False
     parsed["today"] = False
     parsed["weekday"] = None
+
+    help_message = "Usage: python3 -m lunchmenu.cli [--weekly] [--today] [--weekday=<day>]"
 
     if len(sys.argv) > 1:
         for argument in sys.argv[1:]:
             
-            if argument == "--full":
-                parsed["full"] = True
+            if argument == "--weekly":
+                parsed["weekly"] = True
                 
             elif argument == "--today":
                 parsed["today"] = True
@@ -22,15 +24,18 @@ def arg_parser():
                 parsed["weekday"] = argument.split("=")[1]
 
             elif argument == "--help":
-                print("Usage: python3 -m lunchmenu.cli [--full] [--today] [--weekday=<day>]")
+                print(help_message)
                 sys.exit(0)
+    else:
+        print(help_message)
+        sys.exit(0)
     
     return parsed
 
 def main():
     parser = arg_parser()
     
-    if parser["full"]:
+    if parser["weekly"]:
         print(menu_of_the_week())
         
     elif parser["today"]:
